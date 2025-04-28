@@ -52,6 +52,12 @@
       margin-top: 10px;
       font-weight: bold;
     }
+    .end-message {
+      display: none;
+      margin-top: 50px;
+      font-size: 24px;
+      color: #4caf50;
+    }
   </style>
 </head>
 <body>
@@ -59,6 +65,11 @@
 <h1>Proposiciones Simples</h1>
 <p class="instruction">Determina si cada enunciado es una proposición lógica. Selecciona "Sí" o "No". Solo avanzarás si respondes correctamente.</p>
 <div class="cards-container" id="cards-container"></div>
+<div class="end-message" id="end-message">
+  <h2>¡Práctico terminado! 🎉</h2>
+  <p>Una proposición simple es un enunciado que afirma o niega algo de manera clara, y puede ser evaluado como verdadero o falso.<br>
+  Comprender las proposiciones es fundamental en Lógica, ya que forman la base del razonamiento estructurado, necesario tanto en informática como en el análisis de problemas cotidianos.</p>
+</div>
 
 <script>
 const cards = [
@@ -85,6 +96,7 @@ const cards = [
 ];
 
 const container = document.getElementById('cards-container');
+const endMessage = document.getElementById('end-message');
 
 cards.forEach((card, index) => {
   const cardDiv = document.createElement('div');
@@ -111,7 +123,11 @@ function answer(index, selected) {
     feedback.innerText = '✅ Correcto: ' + cards[index].explanation;
     cardDiv.style.background = '#c8e6c9';
     disableCard(index);
-    enableNext(index);
+    if (index === cards.length - 1) {
+      showEndMessage();
+    } else {
+      enableNext(index);
+    }
   } else {
     feedback.innerText = '❌ Incorrecto: ' + cards[index].explanation;
     cardDiv.style.background = '#ffcdd2';
@@ -121,7 +137,7 @@ function answer(index, selected) {
 function disableCard(index) {
   const card = document.getElementById('card-' + index);
   card.classList.remove('active');
-  card.style.pointerEvents = 'none';
+  card.style.pointer-events = 'none';
 }
 
 function enableNext(currentIndex) {
@@ -130,8 +146,12 @@ function enableNext(currentIndex) {
     nextCard.classList.add('active');
   }
 }
+
+function showEndMessage() {
+  container.style.display = 'none';
+  endMessage.style.display = 'block';
+}
 </script>
 
 </body>
 </html>
-
