@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Proposiciones Simples</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .instruction {
+      margin-bottom: 20px;
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .card {
+      background: #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 250px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0.6;
+      transition: background 0.5s, opacity 0.5s;
+      pointer-events: none;
+    }
+    .card.active {
+      background: white;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Proposiciones Simples</h1>
+<p class="instruction">Determina si cada enunciado es una proposición lógica. Selecciona "Sí" o "No". Solo avanzarás si respondes correctamente.</p>
+<div class="cards-container" id="cards-container"></div>
+
+<script>
+const cards = [
+  { q: "5 + 3 = 8", correct: "Sí", explanation: "Es una proposición porque afirma una operación matemática correcta." },
+  { q: "El cielo es azul.", correct: "Sí", explanation: "Es una proposición porque afirma un hecho observable y comprobable empíricamente." },
+  { q: "Hoy es lunes.", correct: "Sí", explanation: "Es una proposición que puede ser verdadera o falsa dependiendo del día." },
+  { q: "Montevideo es la capital de Uruguay.", correct: "Sí", explanation: "Es una proposición porque establece un hecho geográfico verificable." },
+  { q: "¿Cómo te llamás?", correct: "No", explanation: "No es una proposición porque es una pregunta que no afirma ni niega nada." },
+  { q: "¡Estudia para el examen!", correct: "No", explanation: "No es una proposición porque es una orden, no una afirmación evaluable como verdadera o falsa." },
+  { q: "Mañana va a llover.", correct: "Sí", explanation: "Es una proposición porque puede ser evaluada como verdadera o falsa en el futuro." },
+  { q: "Abre la ventana.", correct: "No", explanation: "No es una proposición porque es una orden, no una afirmación." },
+  { q: "La computadora está encendida.", correct: "Sí", explanation: "Es una proposición porque establece un estado que puede verificarse." },
+  { q: "¿Vienes a la fiesta esta noche?", correct: "No", explanation: "No es una proposición porque es una pregunta, no una afirmación." },
+  { q: "El número 7 es par.", correct: "Sí", explanation: "Es una proposición falsa, pero sigue siendo una afirmación evaluable." },
+  { q: "El Sol sale por el oeste.", correct: "Sí", explanation: "Es una proposición falsa, pero es una afirmación que puede verificarse." },
+  { q: "Dos más dos son cinco.", correct: "Sí", explanation: "Es una proposición falsa, pero es una afirmación evaluable lógicamente." },
+  { q: "¡Qué frío hace!", correct: "No", explanation: "No es una proposición porque es una exclamación subjetiva, no evaluable en términos de verdad o falsedad." },
+  { q: "Brasil ganó cinco Copas del Mundo.", correct: "Sí", explanation: "Es una proposición basada en un hecho verificable." },
+  { q: "No hace calor.", correct: "Sí", explanation: "Es una proposición porque afirma una condición del clima que puede ser verificada." },
+  { q: "El agua hierve a 100°C a nivel del mar.", correct: "Sí", explanation: "Es una proposición científica verificable." },
+  { q: "El triángulo tiene cuatro lados.", correct: "Sí", explanation: "Es una proposición falsa, pero es evaluable." },
+  { q: "¿Qué hora es?", correct: "No", explanation: "No es una proposición porque es una pregunta." },
+  { q: "La luz viaja más rápido que el sonido.", correct: "Sí", explanation: "Es una proposición basada en un hecho físico comprobable." }
+];
+
+const container = document.getElementById('cards-container');
+
+cards.forEach((card, index) => {
+  const cardDiv = document.createElement('div');
+  cardDiv.className = 'card' + (index === 0 ? ' active' : '');
+  cardDiv.id = 'card-' + index;
+
+  cardDiv.innerHTML = `
+    <div class="question">${card.q}</div>
+    <div class="buttons">
+      <button onclick="answer(${index}, 'Sí')">Sí</button>
+      <button onclick="answer(${index}, 'No')">No</button>
+    </div>
+    <div class="feedback" id="feedback-${index}"></div>
+  `;
+
+  container.appendChild(cardDiv);
+});
+
+function answer(index, selected) {
+  const feedback = document.getElementById('feedback-' + index);
+  const cardDiv = document.getElementById('card-' + index);
+
+  if (selected === cards[index].correct) {
+    feedback.innerText = '✅ Correcto: ' + cards[index].explanation;
+    cardDiv.style.background = '#c8e6c9';
+    disableCard(index);
+    enableNext(index);
+  } else {
+    feedback.innerText = '❌ Incorrecto: ' + cards[index].explanation;
+    cardDiv.style.background = '#ffcdd2';
+  }
+}
+
+function disableCard(index) {
+  const card = document.getElementById('card-' + index);
+  card.classList.remove('active');
+  card.style.pointerEvents = 'none';
+}
+
+function enableNext(currentIndex) {
+  const nextCard = document.getElementById('card-' + (currentIndex + 1));
+  if (nextCard) {
+    nextCard.classList.add('active');
+  }
+}
+</script>
+
+</body>
+</html>
+
