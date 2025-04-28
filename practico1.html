@@ -100,7 +100,10 @@ const endMessage = document.getElementById('end-message');
 
 cards.forEach((card, index) => {
   const cardDiv = document.createElement('div');
-  cardDiv.className = 'card' + (index === 0 ? ' active' : '');
+  cardDiv.className = 'card';
+  if (index === 0) {
+    cardDiv.classList.add('active');
+  }
   cardDiv.id = 'card-' + index;
 
   cardDiv.innerHTML = `
@@ -137,7 +140,7 @@ function answer(index, selected) {
 function disableCard(index) {
   const card = document.getElementById('card-' + index);
   card.classList.remove('active');
-  card.style.pointer-events = 'none';
+  card.style.pointerEvents = 'none';
 }
 
 function enableNext(currentIndex) {
